@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin - Gestion des Assistants Wave</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f7f9fa;
+            color: #111111;
+            padding: 20px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .admin-container {
+            width: 100%;
+            max-width: 480px; /* Parfaitement adapté pour une lecture sur smartphone */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* En-tête du panneau */
+        .admin-header {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-bottom: 20px;
+            border: 1px solid #eef2f5;
+        }
+
+        .admin-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #39bcf4; /* Bleu officiel Wave */
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-header p {
+            font-size: 14px;
+            color: #666666;
+            line-height: 1.4;
+        }
+
+        /* Liste des candidats sous forme de cartes élégantes */
+        .candidates-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .candidate-card {
+            background: #ffffff;
+            border: 1px solid #eef2f5;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.2s;
+        }
+
+        .candidate-card:active {
+            transform: scale(0.98);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .phone-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111111;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-id {
+            background-color: #e1f5fe;
+            color: #0288d1;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 8px;
+        }
+
+        .registration-date {
+            font-size: 12px;
+            color: #888888;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .gps-coordinates {
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #555555;
+            margin-bottom: 16px;
+            border: 1px solid #f1f3f5;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Gros bouton d'itinéraire direct Google Maps */
+        .btn-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            background-color: #39bcf4;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 0;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(57,188,244,0.3);
+            transition: background-color 0.2s;
+        }
+
+        .btn-navigation:active {
+            background-color: #29abe2;
+        }
+
+        /* Message quand la liste est vide */
+        .empty-state {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px dashed #cccccc;
+            color: #888888;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+
+    <!-- En-tête -->
+    <div class="admin-header">
+        <h1>⚙️ Suivi Wave</h1>
+        <p>Retrouve la liste de tous tes candidats assistants Wave et lance l'itinéraire vers eux en un clic.</p>
+    </div>
+
+    <!-- Liste dynamique -->
+    <div class="candidates-list">
+        {% if candidats %}
+            {% for c in candidats %}
+            <div class="candidate-card">
+                <div class="card-top">
+                    <span class="phone-number">📱 {{ c.telephone }}</span>
+                    <span class="badge-id">ID: #{{ c.id }}</span>
+                </div>
+                
+                <div class="registration-date">
+                    <span>🕒 Inscrit le : {{ c.date }}</span>
+                </div>
+
+                <div class="gps-coordinates">
+                    <span><strong>Lat :</strong> {{ c.latitude|round(6) }}</span>
+                    <span><strong>Lng :</strong> {{ c.longitude|round(6) }}</span>
+                </div>
+
+                <!-- Bouton Itinéraire Google Maps -->
+                <a href="{{ c.map_link }}" target="_blank" class="btn-navigation">
+                    🚀 Lancer l'itinéraire (Démarrer)
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">👥</div>
+                <p>Aucun assistant inscrit pour le moment.</p>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>
+
+

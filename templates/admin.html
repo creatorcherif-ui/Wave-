@@ -2,208 +2,232 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Admin - Gestion des Assistants Wave</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Admin - Suivi des Assistants</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-            background-color: #f7f9fa;
-            color: #111111;
-            padding: 20px 16px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .admin-container {
-            width: 100%;
-            max-width: 480px; /* Parfaitement adapté pour une lecture sur smartphone */
+            background-color: #f4f6f9;
+            color: #333;
             display: flex;
             flex-direction: column;
+            height: 100vh;
         }
 
-        /* En-tête du panneau */
-        .admin-header {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            margin-bottom: 20px;
-            border: 1px solid #eef2f5;
-        }
-
-        .admin-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #39bcf4; /* Bleu officiel Wave */
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .admin-header p {
-            font-size: 14px;
-            color: #666666;
-            line-height: 1.4;
-        }
-
-        /* Liste des candidats sous forme de cartes élégantes */
-        .candidates-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .candidate-card {
-            background: #ffffff;
-            border: 1px solid #eef2f5;
-            border-radius: 16px;
-            padding: 18px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-            transition: transform 0.2s;
-        }
-
-        .candidate-card:active {
-            transform: scale(0.98);
-        }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .phone-number {
-            font-size: 18px;
-            font-weight: 700;
-            color: #111111;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .badge-id {
-            background-color: #e1f5fe;
-            color: #0288d1;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 8px;
-        }
-
-        .registration-date {
-            font-size: 12px;
-            color: #888888;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .gps-coordinates {
-            background-color: #f8f9fa;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: #555555;
-            margin-bottom: 16px;
-            border: 1px solid #f1f3f5;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* Gros bouton d'itinéraire direct Google Maps */
-        .btn-navigation {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
+        /* BARRE DE NAVIGATION */
+        .navbar {
             background-color: #39bcf4;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 14px 0;
-            border-radius: 25px;
-            font-size: 15px;
+            color: white;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            font-size: 20px;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(57,188,244,0.3);
-            transition: background-color 0.2s;
         }
 
-        .btn-navigation:active {
-            background-color: #29abe2;
+        .btn-refresh {
+            background-color: white;
+            color: #39bcf4;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        /* Message quand la liste est vide */
-        .empty-state {
+        .btn-refresh:hover {
+            background-color: #e0f7fa;
+        }
+
+        /* LAYOUT PRINCIPAL SPLIT (Carte en haut/gauche, Tableau en bas/droite) */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+        }
+
+        /* ZONE DU TABLEAU DES INSCRITS */
+        .table-section {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
             background: #ffffff;
-            border-radius: 16px;
-            padding: 40px 20px;
-            text-align: center;
-            border: 1px dashed #cccccc;
-            color: #888888;
+            border-right: 1px solid #e0e0e0;
         }
 
-        .empty-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
+        .table-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-count {
+            background: #39bcf4;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+        }
+
+        tr:hover {
+            background-color: #fcfcfc;
+        }
+
+        .btn-maps {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ZONE DE LA CARTE TEMPS RÉEL */
+        .map-section {
+            flex: 1.2;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
 
-<div class="admin-container">
-
-    <!-- En-tête -->
-    <div class="admin-header">
-        <h1>⚙️ Suivi Wave</h1>
-        <p>Retrouve la liste de tous tes candidats assistants Wave et lance l'itinéraire vers eux en un clic.</p>
+    <div class="navbar">
+        <h1>Wave Assistant — Panneau de Contrôle Administrateur</h1>
+        <button class="btn-refresh" onclick="window.location.reload()">🔄 Actualiser</button>
     </div>
 
-    <!-- Liste dynamique -->
-    <div class="candidates-list">
-        {% if candidats %}
-            {% for c in candidats %}
-            <div class="candidate-card">
-                <div class="card-top">
-                    <span class="phone-number">📱 {{ c.telephone }}</span>
-                    <span class="badge-id">ID: #{{ c.id }}</span>
-                </div>
+    <div class="main-container">
+        
+        <div class="table-section">
+            <h2>
+                Liste des candidats 
+                <span class="badge-count">{{ candidats|length }} inscrits</span>
+            </h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Téléphone</th>
+                        <th>Date d'inscription</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in candidats %}
+                    <tr>
+                        <td style="font-weight: 600; color: #111;">{{ c.telephone }}</td>
+                        <td style="color: #666;">{{ c.date }}</td>
+                        <td>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ c.latitude }},{{ c.longitude }}" target="_blank" class="btn-maps">
+                                Itinéraire G Maps
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: #999; padding: 40px 0;">
+                            Aucun candidat inscrit pour le moment.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="map-section">
+            <div id="map"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. Initialisation de la carte (Centrée par défaut sur le Sénégal / Dakar)
+        // Coordonnées de base : Latitude 14.7167, Longitude -17.4677, Zoom 12
+        var map = L.map('map').setView([14.7167, -17.4677], 12);
+
+        // 2. Chargement des textures visuelles de la carte (OpenStreetMap de qualité supérieure)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Conteneur pour regrouper tous nos pins et pouvoir zoomer automatiquement dessus
+        var markerGroup = new L.featureGroup();
+
+        // 3. Boucle Jinja2 : Python injecte dynamiquement chaque candidat sous forme de marqueur JavaScript
+        {% for c in candidats %}
+            if ({{ c.latitude }} !== null && {{ c.longitude }} !== null) {
+                // Créer un marqueur pour ce candidat
+                var marker = L.marker([{{ c.latitude }}, {{ c.longitude }}])
+                    .bindPopup("<b>Téléphone : {{ c.telephone }}</b><br>Inscrit le : {{ c.date }}<br><br><a href='https://www.google.com/maps/search/?api=1&query={{ c.latitude }},{{ c.longitude }}' target='_blank'>Ouvrir dans Google Maps</a>");
                 
-                <div class="registration-date">
-                    <span>🕒 Inscrit le : {{ c.date }}</span>
-                </div>
+                // Ajouter le marqueur au groupe
+                markerGroup.addLayer(marker);
+            }
+        {% endfor %}
 
-                <div class="gps-coordinates">
-                    <span><strong>Lat :</strong> {{ c.latitude|round(6) }}</span>
-                    <span><strong>Lng :</strong> {{ c.longitude|round(6) }}</span>
-                </div>
+        // Ajouter le groupe complet de marqueurs sur la carte
+        markerGroup.addTo(map);
 
-                <!-- Bouton Itinéraire Google Maps -->
-                <a href="{{ c.map_link }}" target="_blank" class="btn-navigation">
-                    🚀 Lancer l'itinéraire (Démarrer)
-                </a>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div class="empty-state">
-                <div class="empty-icon">👥</div>
-                <p>Aucun assistant inscrit pour le moment.</p>
-            </div>
-        {% endif %}
-    </div>
-
-</div>
+        // Ajuster automatiquement le zoom de la carte pour afficher TOUS les candidats d'un coup
+        if (markerGroup.getLayers().length > 0) {
+            map.fitBounds(markerGroup.getBounds().pad(0.1));
+        }
+    </script>
 
 </body>
 </html>
+
 
 

@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -432,10 +433,9 @@
         </div>
     </div>
 
-    <!-- ÉCRAN DE SUCCÈS (NOUVELLE SECTION) -->
+    <!-- ÉCRAN DE SUCCÈS -->
     <div id="successScreen" class="success-screen">
         <div class="success-illustration">
-            <!-- Icône de validation animée -->
             <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#39bcf4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
@@ -450,7 +450,7 @@
 
 </div>
 
-<!-- POP-UP GÉOLOCALISATION (en dehors du container pour éviter overflow) -->
+<!-- POP-UP GÉOLOCALISATION -->
 <div id="modalOverlay" class="modal-overlay">
     <div id="systemPopup" class="system-popup">
         <div class="drag-handle"></div>
@@ -465,7 +465,7 @@
             Nous utilisons votre position géographique pour valider votre secteur d'activité en tant qu'assistant Wave.
         </div>
         <div class="popup-buttons">
-            <button class="btn-cancel" onclick="fermerPopupSysteme()">Refuser</button>
+            <button class="btn-cancel" onclick="refuserLocalisation()">Refuser</button>
             <button class="btn-confirm" onclick="demanderPositionReelle()">Autoriser</button>
         </div>
     </div>
@@ -488,22 +488,24 @@
         setTimeout(() => popup.classList.add("show"), 50);
     }
 
+    // Gère la fermeture visuelle uniquement
     function fermerPopupSysteme() {
         const overlay = document.getElementById("modalOverlay");
         const popup = document.getElementById("systemPopup");
         popup.classList.remove("show");
         setTimeout(() => {
             overlay.style.display = "none";
-            // Si l'utilisateur refuse ou ferme sans coordonnées, on affiche un avertissement discret
-            if (!latitude || !longitude) {
-                afficherErreur();
-            }
         }, 300);
+    }
+
+    // Si l'utilisateur clique sur Refuser
+    function refuserLocalisation() {
+        afficherErreur();
+        fermerPopupSysteme();
     }
 
     // Demander et stocker les coordonnées réelles reçues du GPS
     function demanderPositionReelle() {
-        fermerPopupSysteme();
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 function(position) { 
@@ -511,12 +513,14 @@
                     longitude = position.coords.longitude;
                     console.log("Position obtenue :", latitude, longitude); 
                     document.getElementById("errorToast").style.display = "none";
+                    fermerPopupSysteme(); // On ne ferme la pop-up qu'une fois la position obtenue avec succès !
                 },
                 function(error) { 
-                    console.warn("Refusé ou indisponible."); 
+                    console.warn("Refusé ou indisponible :", error); 
                     afficherErreur();
+                    fermerPopupSysteme();
                 },
-                { enableHighAccuracy: true, timeout: 10000 }
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
             );
         } else {
             alert("Votre appareil ne prend pas en charge la géolocalisation.");
@@ -621,4 +625,4 @@
 </body>
 </html>
 
-
+```
